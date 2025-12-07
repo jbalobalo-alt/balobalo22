@@ -1,8 +1,29 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Hobbies() {
   return (
-    <div className="max-w-4xl mx-auto bg-blue-100">
+    <div className="max-w-4xl mx-auto bg-blue-100 min-h-screen">
+      <header className="flex justify-start p-4">
+        <nav className="flex gap-4">
+          <Link href="/">
+            <Button variant="outline">Home</Button>
+          </Link>
+          <Link href="/about">
+            <Button variant="outline">About</Button>
+          </Link>
+          <Link href="/education">
+            <Button variant="outline">Education</Button>
+          </Link>
+          <Link href="/hobbies">
+            <Button variant="outline">Hobbies</Button>
+          </Link>
+          <Link href="/contact">
+            <Button variant="outline">Contact</Button>
+          </Link>
+        </nav>
+      </header>
       <h1 className="text-3xl font-bold mb-8">My Hobbies</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="text-center">

@@ -3,10 +3,30 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
-export default function Contact() {3
+export default function Contact() {
   return (
     <div className="max-w-4xl mx-auto bg-blue-100 min-h-screen">
+      <header className="flex justify-start p-4">
+        <nav className="flex gap-4">
+          <Link href="/">
+            <Button variant="outline">Home</Button>
+          </Link>
+          <Link href="/about">
+            <Button variant="outline">About</Button>
+          </Link>
+          <Link href="/education">
+            <Button variant="outline">Education</Button>
+          </Link>
+          <Link href="/hobbies">
+            <Button variant="outline">Hobbies</Button>
+          </Link>
+          <Link href="/contact">
+            <Button variant="outline">Contact</Button>
+          </Link>
+        </nav>
+      </header>
       <h1 className="text-3xl font-bold mb-8">Contact Me</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>

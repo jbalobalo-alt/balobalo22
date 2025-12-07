@@ -181,13 +181,17 @@ export default function DashboardHome() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-teal-100 to-blue-100">
-      <div className="w-full max-w-none bg-blue-95 backdrop-blur-sm rounded-xl shadow-lg p-6">
-        <header className="mb-6">
-          <h1 className="text-3xl font-bold text-black-800">Positions Dashboard</h1>
-        </header>
-        
-        <Card className="mb-6 transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
+    <div className="p-4">
+      <div className="w-full max-w-none">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Positions Dashboard</h1>
+          <div className="flex items-center gap-3">
+            <Button variant="outline" onClick={() => fetchPositions()} className="hover:scale-105 hover:shadow-md transition-all duration-200 active:scale-95">Refresh</Button>
+            <Button variant="destructive" onClick={handleLogout} className="hover:scale-105 hover:shadow-md transition-all duration-200 active:scale-95">Logout</Button>
+          </div>
+        </div>
+
+        <Card className="mb-6">
           <CardContent>
             <h2 className="text-lg font-semibold mb-4">{editingPositionId ? 'Edit Position' : 'Create New Position'}</h2>
             <form onSubmit={handleCreateOrUpdate} className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -204,21 +208,16 @@ export default function DashboardHome() {
                 required
               />
               <div className="flex gap-2">
-                <Button type="submit" className="transition-all duration-200 hover:scale-105">{editingPositionId ? 'Update' : 'Create'}</Button>
+                <Button type="submit" className="hover:scale-105 hover:shadow-md transition-all duration-200 active:scale-95">{editingPositionId ? 'Update' : 'Create'}</Button>
                 {editingPositionId && (
-                  <Button variant="outline" onClick={handleCancelEdit} className="transition-all duration-200 hover:scale-105">Cancel</Button>
+                  <Button variant="outline" onClick={handleCancelEdit} className="hover:scale-105 hover:shadow-md transition-all duration-200 active:scale-95">Cancel</Button>
                 )}
               </div>
             </form>
             {error && <p className="text-red-600 mt-2">{error}</p>}
           </CardContent>
         </Card>
-
-        <div className="flex justify-center gap-3 mb-6">
-          <Button variant="outline" onClick={() => fetchPositions()} className="transition-all duration-200 hover:scale-105">Refresh</Button>
-          <Button variant="destructive" onClick={handleLogout} className="transition-all duration-200 hover:scale-105">Logout</Button>
-        </div>
-
+        
         <section>
           <h2 className="text-lg font-semibold mb-4">Positions List {loading && '(loading...)'}</h2>
 
@@ -246,8 +245,8 @@ export default function DashboardHome() {
                       <td className="px-4 py-2">{position.position_name}</td>
                       <td className="px-4 py-2">
                         <div className="space-x-2">
-                          <Button variant="outline" size="sm" onClick={() => startEdit(position)} className="transition-all duration-200 hover:scale-105">Edit</Button>
-                          <Button variant="destructive" size="sm" onClick={() => handleDelete(position.positions_id)} className="transition-all duration-200 hover:scale-105">Delete</Button>
+                          <Button variant="outline" size="sm" onClick={() => startEdit(position)} className="hover:scale-105 hover:shadow-md transition-all duration-200 active:scale-95">Edit</Button>
+                          <Button variant="destructive" size="sm" onClick={() => handleDelete(position.positions_id)} className="hover:scale-105 hover:shadow-md transition-all duration-200 active:scale-95">Delete</Button>
                         </div>
                       </td>
                     </tr>
@@ -259,4 +258,4 @@ export default function DashboardHome() {
       </div>
     </div>
   );
-} 
+}

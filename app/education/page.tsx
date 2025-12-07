@@ -1,8 +1,29 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Education() {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto bg-blue-100 min-h-screen">
+      <header className="flex justify-start p-4">
+        <nav className="flex gap-4">
+          <Link href="/">
+            <Button variant="outline">Home</Button>
+          </Link>
+          <Link href="/about">
+            <Button variant="outline">About</Button>
+          </Link>
+          <Link href="/education">
+            <Button variant="outline">Education</Button>
+          </Link>
+          <Link href="/hobbies">
+            <Button variant="outline">Hobbies</Button>
+          </Link>
+          <Link href="/contact">
+            <Button variant="outline">Contact</Button>
+          </Link>
+        </nav>
+      </header>
       <h1 className="text-3xl font-bold mb-8">Education</h1>
       <div className="space-y-6">
         <Card>

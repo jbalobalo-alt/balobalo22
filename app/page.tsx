@@ -1,12 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const PROFILE_IMAGE_SRC = "/profile.jpg";
 
 export default function Home() {
   return (
-    <div className="text-center bg-blue-200 min-h-screen">
-      <Image
+    <div className="bg-blue-100 min-h-screen">
+      <header className="flex justify-start p-4">
+        <nav className="flex gap-4">
+          <Link href="/">
+            <Button variant="outline">Home</Button>
+          </Link>
+          <Link href="/about">
+            <Button variant="outline">About</Button>
+          </Link>
+          <Link href="/education">
+            <Button variant="outline">Education</Button>
+          </Link>
+          <Link href="/hobbies">
+            <Button variant="outline">Hobbies</Button>
+          </Link>
+          <Link href="/contact">
+            <Button variant="outline">Contact</Button>
+          </Link>
+        </nav>
+      </header>
+      <div className="text-center">
+        <Image
         src={PROFILE_IMAGE_SRC}
         alt="James' profile picture"
         width={200}
@@ -43,6 +64,7 @@ export default function Home() {
          
           </div>
         </Link>
+      </div>
       </div>
     </div>
   );

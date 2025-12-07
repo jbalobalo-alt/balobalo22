@@ -1,40 +1,36 @@
-"use client";
+'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserPlus, User, Lock, Mail, Eye, EyeOff } from 'lucide-react';
-import { API_BASE } from '@/lib/config';
-import { saveRegisteredUser } from '@/lib/auth';
+import { UserPlus, User, Lock, Eye, EyeOff } from 'lucide-react';
 
-import { FormEvent } from 'react';
+import { API_BASE } from '@/lib/config';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [fullname, setFullname] = useState('');
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  async function handleRegister(e: FormEvent) {
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError(null);
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    if (!agreeToTerms) {
-      setError('Please agree to the terms and conditions');
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
       return;
     }
 
@@ -44,18 +40,17 @@ export default function RegisterPage() {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, fullname }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.message || 'Registration failed');
         return;
       }
 
-      saveRegisteredUser(username);
-      router.push('/login?message=Registration successful! Please sign in.');
+      // Registration successful, redirect to login
+      router.push('/login?message=Registration successful! Please log in.');
     } catch (err) {
       setError('Network error. Please try again.');
     } finally {
@@ -64,52 +59,33 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card className="w-full max-w-lg shadow-2xl bg-white/95 backdrop-blur-sm">
+    <Card className="w-full max-w-md shadow-2xl bg-gray-50/95 backdrop-blur-sm">
         <CardHeader className="space-y-1 text-center pb-2">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-gray-500 to-gray-600">
-            <UserPlus className="h-6 w-6 text-gray-700" />
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
+            <UserPlus className="h-6 w-6 text-white" />
           </div>
-          <CardTitle className="text-2xl font-bold text-black-900">Create Account</CardTitle>
+          <CardTitle className="text-2xl font-bold text-gray-900">Create Account</CardTitle>
           <CardDescription className="text-gray-600">
-            Join us and start your journey today
+            Sign up to get started with your account
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <form onSubmit={handleRegister} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullname" className="text-sm font-medium text-gray-700">
-                  Full Name
-                </Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <Input
-                    id="fullname"
-                    placeholder="Enter your full name"
-                    value={fullname}
-                    onChange={(e) => setFullname(e.target.value)}
-                    required
-                    disabled={isLoading}
-                    className="pl-10 h-11"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="username" className="text-sm font-medium text-gray-700">
-                  Username
-                </Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <Input
-                    id="username"
-                    placeholder="Choose a username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    disabled={isLoading}
-                    className="pl-10 h-11"
-                  />
-                </div>
+            <div className="space-y-2">
+              <Label htmlFor="username" className="text-sm font-medium text-gray-700">
+                Username
+              </Label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Input
+                  id="username"
+                  placeholder="Choose a username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  className="pl-10 h-11"
+                />
               </div>
             </div>
 
@@ -165,28 +141,6 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-2">
-              <input
-                id="terms"
-                type="checkbox"
-                checked={agreeToTerms}
-                onChange={(e) => setAgreeToTerms(e.target.checked)}
-                className="h-4 w-4 mt-1 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                required
-                disabled={isLoading}
-              />
-              <Label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed">
-                I agree to the{' '}
-                <Button variant="link" className="p-0 h-auto text-sm underline text-blue-600 hover:text-blue-800">
-                  Terms of Service
-                </Button>{' '}
-                and{' '}
-                <Button variant="link" className="p-0 h-auto text-sm underline text-blue-600 hover:text-blue-800">
-                  Privacy Policy
-                </Button>
-              </Label>
-            </div>
-
             {error && (
               <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
                 {error}
@@ -194,7 +148,7 @@ export default function RegisterPage() {
             )}
 
             <Button
-              className="w-full h-11 bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 text-blue font-medium"
+              className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium"
               type="submit"
               disabled={isLoading}
             >
